@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Creinbel • Mayoreo</title>
+    <!-- Font Awesome para íconos (CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0a0a0a;
+            color: #fff;
+            line-height: 1.6;
+            padding-bottom: 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(145deg, #8B1E1E 0%, #5a1212 100%);
+            padding: 15px 15px 5px 15px;
+            border-bottom: 3px solid #D4AF37;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+
+        .logo h1 {
+            font-size: 2.2rem;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px #D4AF37, 0 0 20px #D4AF37;
+            color: #fff;
+            text-align: center;
+            font-weight: 900;
+        }
+
+        .logo .brillo {
+            display: block;
+            text-align: center;
+            color: #D4AF37;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            margin-top: -5px;
+        }
+
+        /* Barra de búsqueda */
+        .busqueda {
+            display: flex;
+            align-items: center;
+            background: #1e1e1e;
+            border-radius: 50px;
+            padding: 8px 15px;
+            margin: 15px 0 10px;
+            border: 1px solid #D4AF37;
+        }
+
+        .busqueda i {
+            color: #D4AF37;
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        .busqueda input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #fff;
+            width: 100%;
+            font-size: 1rem;
+        }
+
+        .busqueda input::placeholder {
+            color: #aaa;
+        }
+
+        /* Menú inferior */
+        .menu-inferior {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background: #1a1a1a;
+            border-radius: 40px;
+            padding: 8px 5px;
+            margin-top: 10px;
+            border: 1px solid #D4AF37;
+        }
+
+        .menu-inferior a {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 0.75rem;
+            padding: 5px 10px;
+            border-radius: 30px;
+            transition: all 0.2s;
+        }
+
+        .menu-inferior a i {
+            font-size: 1.5rem;
+            margin-bottom: 2px;
+            color: #D4AF37;
+        }
+
+        .menu-inferior a.activo {
+            background: #8B1E1E;
+        }
+
+        .menu-inferior a.activo i {
+            color: #fff;
+        }
+
+        /* Productos */
+        .productos {
+            padding: 20px 15px;
+        }
+
+        .productos h2 {
+            font-size: 1.8rem;
+            color: #D4AF37;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-left: 5px solid #8B1E1E;
+            padding-left: 15px;
+        }
+
+        .grid-productos {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .producto {
+            background: #1a1a1a;
+            border-radius: 25px;
+            padding: 15px;
+            border: 1px solid #D4AF37;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.7);
+            transition: transform 0.2s;
+        }
+
+        .producto:active {
+            transform: scale(0.98);
+        }
+
+        .producto img {
+            width: 100%;
+            border-radius: 20px;
+            border: 2px solid #D4AF37;
+            background: #8B1E1E;
+            object-fit: cover;
+            aspect-ratio: 1/1;
+        }
+
+        .producto h3 {
+            font-size: 1.4rem;
+            margin: 10px 0 5px;
+            color: #fff;
+        }
+
+        .precio {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #D4AF37;
+        }
+
+        .precio .mayoreo {
+            font-size: 0.9rem;
+            color: #aaa;
+            font-weight: normal;
+        }
+
+        .stock {
+            background: #8B1E1E;
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 50px;
+            margin: 10px 0;
+            font-size: 0.95rem;
+            border: 1px solid #D4AF37;
+        }
+
+        .numero-stock {
+            font-weight: bold;
+            color: #D4AF37;
+        }
+
+        .acciones {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .acciones button {
+            background: #8B1E1E;
+            border: 1px solid #D4AF37;
+            color: white;
+            font-size: 1.2rem;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .acciones button:active {
+            background: #D4AF37;
+            color: #8B1E1E;
+        }
+
+        .acciones .cantidad {
+            font-size: 1.5rem;
+            font-weight: bold;
+            min-width: 30px;
+            text-align: center;
+            color: #D4AF37;
+        }
+
+        .btn-apartar {
+            flex: 1;
+            border-radius: 40px !important;
+            width: auto !important;
+            padding: 0 15px;
+            background: #D4AF37 !important;
+            color: #1a1a1a !important;
+            font-weight: bold;
+            font-size: 1rem !important;
+            gap: 5px;
+        }
+
+        .btn-apartar i {
+            color: #1a1a1a;
+        }
+
+        /* Footer */
+        footer {
+            background: #0f0f0f;
+            border-top: 3px solid #8B1E1E;
+            padding: 30px 15px 15px;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .contacto p {
+            margin: 10px 0;
+            font-size: 1.1rem;
+        }
+
+        .contacto a {
+            color: #D4AF37;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .legales {
+            margin: 25px 0 15px;
+            font-size: 0.8rem;
+            color: #888;
+            border-top: 1px solid #333;
+            padding-top: 20px;
+        }
+
+        .buchona-footer {
+            color: #D4AF37;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+        }
+
+        body, html {
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .logo h1::after {
+            content: ' ✦';
+            color: #D4AF37;
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>CREINBEL</h1>
+            <span class="brillo">✦ mayoreo de impacto ✦</span>
+        </div>
+        <div class="busqueda">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Buscar producto...">
+        </div>
+        <nav class="menu-inferior">
+            <a href="#" class="activo"><i class="fas fa-home"></i><span>Inicio</span></a>
+            <a href="#"><i class="fas fa-tags"></i><span>Catálogo</span></a>
+            <a href="#" id="carrito-icono"><i class="fas fa-shopping-cart"></i><span>Carrito</span></a>
+            <a href="#" id="whatsapp-icono"><i class="fab fa-whatsapp"></i><span>WhatsApp</span></a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="productos">
+            <h2>🔥 Lo más buscado <i class="fas fa-fire"></i></h2>
+            <div class="grid-productos">
+                <!-- Producto 1 -->
+                <div class="producto">
+                    <img src="https://via.placeholder.com/300x300/8B1E1E/FFFFFF?text=BOLSA" alt="Bolsa buchona">
+                    <h3>Bolsa de mano brillosa</h3>
+                    <p class="precio">$250 <span class="mayoreo">(mayoreo: $220)</span></p>
+                    <div class="stock">Disponibles: <span class="numero-stock">20</span></div>
+                    <div class="acciones">
+                        <button class="btn-restar"><i class="fas fa-minus"></i></button>
+                        <span class="cantidad">1</span>
+                        <button class="btn-sumar"><i class="fas fa-plus"></i></button>
+                        <button class="btn-apartar"><i class="fas fa-cart-plus"></i> Apartar</button>
+                    </div>
+                </div>
+                <!-- Producto 2 -->
+                <div class="producto">
+                    <img src="https://via.placeholder.com/300x300/D4AF37/000000?text=ZAPATO" alt="Zapato tacon">
+                    <h3>Zapato dorado brillante</h3>
+                    <p class="precio">$380 <span class="mayoreo">(mayoreo: $340)</span></p>
+                    <div class="stock">Disponibles: <span class="numero-stock">15</span></div>
+                    <div class="acciones">
+                        <button class="btn-restar"><i class="fas fa-minus"></i></button>
+                        <span class="cantidad">1</span>
+                        <button class="btn-sumar"><i class="fas fa-plus"></i></button>
+                        <button class="btn-apartar"><i class="fas fa-cart-plus"></i> Apartar</button>
+                    </div>
+                </div>
+                <!-- Producto 3 -->
+                <div class="producto">
+                    <img src="https://via.placeholder.com/300x300/8B1E1E/D4AF37?text=CONJUNTO" alt="Conjunto">
+                    <h3>Conjunto elegante</h3>
+                    <p class="precio">$520 <span class="mayoreo">(mayoreo: $480)</span></p>
+                    <div class="stock">Disponibles: <span class="numero-stock">8</span></div>
+                    <div class="acciones">
+                        <button class="btn-restar"><i class="fas fa-minus"></i></button>
+                        <span class="cantidad">1</span>
+                        <button class="btn-sumar"><i class="fas fa-plus"></i></button>
+                        <button class="btn-apartar"><i class="fas fa-cart-plus"></i> Apartar</button>
+                    </div>
+                </div>
+                <!-- Producto 4 -->
+                <div class="producto">
+                    <img src="https://via.placeholder.com/300x300/D4AF37/8B1E1E?text=RELUMBRANTE" alt="Relumbrante">
+                    <h3>Accesorios brillantes</h3>
+                    <p class="precio">$120 <span class="mayoreo">(mayoreo: $100)</span></p>
+                    <div class="stock">Disponibles: <span class="numero-stock">30</span></div>
+                    <div class="acciones">
+                        <button class="btn-restar"><i class="fas fa-minus"></i></button>
+                        <span class="cantidad">1</span>
+                        <button class="btn-sumar"><i class="fas fa-plus"></i></button>
+                        <button class="btn-apartar"><i class="fas fa-cart-plus"></i> Apartar</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="contacto">
+            <p><i class="fas fa-phone-alt"></i> <strong>Pedidos por WhatsApp:</strong> <a href="https://wa.me/521234567890">+52 123 456 7890</a></p>
+            <p><i class="fas fa-envelope"></i> <strong>Correo:</strong> ventas@creinbel.mx (solo consultas)</p>
+        </div>
+        <div class="legales">
+            <p>© 2025 Creinbel. Todos los productos sujetos a disponibilidad.</p>
+            <p>Al permanecer en este sitio, aceptas el uso de cookies para mejorar tu experiencia.</p>
+        </div>
+        <div class="buchona-footer">
+            <i class="fas fa-crown"></i> Hecho con estilo buchón <i class="fas fa-crown"></i>
+        </div>
+    </footer>
+
+    <script>
+        // Interactividad básica para la maqueta
+        document.querySelectorAll('.btn-sumar').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                let cantidadSpan = this.parentElement.querySelector('.cantidad');
+                let cantidad = parseInt(cantidadSpan.textContent);
+                cantidadSpan.textContent = cantidad + 1;
+            });
+        });
+        document.querySelectorAll('.btn-restar').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                let cantidadSpan = this.parentElement.querySelector('.cantidad');
+                let cantidad = parseInt(cantidadSpan.textContent);
+                if (cantidad > 1) cantidadSpan.textContent = cantidad - 1;
+            });
+        });
+        // Vibración al tocar (solo móviles)
+        document.querySelectorAll('button, a').forEach(el => {
+            el.addEventListener('touchstart', function() {
+                if (window.navigator.vibrate) window.navigator.vibrate(10);
+            });
+        });
+    </script>
+</body>
+</html>
